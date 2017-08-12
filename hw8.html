@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="hw8.css" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="hw8.js"></script>
+     
+    </head>
+    <body>
+        <div ng-app="myApp" ng-controller="myCtrl">
+            <div id="pageHeader">
+                <form id="searchForm" novalidate>
+                    <label for="keywordInput">FB Search</label>
+                    <input type="text" id="keywordInput" placeholder="type something..." ng-model="keyword" required>
+                <button class="btn btn-info" id="submitInput" ng-click="submitKey()"><span class="glyphicon glyphicon-search"></span></button>
+                <input type=reset value="Clear" id="clearInput">
+            </form>
+            </div>
+            
+            <div class="container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#User">User</a></li>
+                    <li><a href="#Pages">Pages</a></li>
+                    <li><a href="#Events">Events</a></li>
+                    <li><a href="#Places">Places</a></li>
+                    <li><a href="#Groups">Groups</a></li>
+                    <li><a href="#Favorites">Favorites</a></li>
+                </ul>
+                
+                <div id="albNposts" class='animate-hid' ng-hide="Phid">
+                    <div>
+                        <button ng-click="backBut()">Back</button>
+                    </div>
+                    <div class="col-sm-6">
+                    <div class="Albums">
+                        <table><h1>Albums</h1>
+                            <tr ng-repeat="x in albums"><td><h2>{{x.name}}</h2><div ng-repeat="y in x.photos.data"><img src="{{y.picture}}"></div></td>
+                        </table>
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <div class="posts">
+                        <h1>Posts</h1>
+                            <div ng-repeat="x in posts"><img src="{{info.picture.data.url}}" width="40" height="40">{{info.name}}<br>{{x.message}}</div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class='animate-hid' ng-hide="Shid">
+                <div id="searchDiv" class="tab-content">
+                    <div id="User" class="tab-pane fade in active">
+                        <table class="table table-hover"><tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in usrs"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td>
+                                <td><button class="btn btn-info" ng-click="addFavorite(x.id)">favorite</button></td><td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td>
+                            <tr><td></td><td></td><td><button type="button" ng-click="submitUsrPaging(usrPaging.previous)" class="btn">Previous</button>
+                        </td><td><button type="button" class="btn" ng-click="submitUsrPaging(usrPaging.next)">Next</button></td>
+                        </table>
+                        
+                    </div>
+                    <div id="Pages" class="tab-pane fade">
+                        <table class="table table-hover"><tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in pages"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td><td><button class="btn btn-info" ng-click="addFavorite(x.id)">favorite</button></td><td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td><tr><td></td><td></td><td><button type="button" ng-click="submitPagePaging(pagesPaging.previous)" class="btn">Previous</button>
+                        </td><td><button type="button" class="btn" ng-click="submitPagePaging(pagesPaging.next)">Next</button></td>
+                        </table>
+                    </div>
+                    <div id="Events" class="tab-pane fade">
+                        <table class="table table-hover"><tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in events"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td><td><button class="btn btn-info" ng-click="addFavorite(x.id)">favorite</button></td><td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td><tr><td></td><td></td><td><button type="button" ng-click="submitEventPaging(eventsPaging.previous)" class="btn">Previous</button>
+                        </td><td><button type="button" class="btn" ng-click="submitEventPaging(eventsPaging.next)">Next</button></td>
+                        </table>
+                    </div>
+                    <div id="Places" class="tab-pane fade">
+                        <table class="table table-hover"><tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in places"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td><td><button class="btn btn-info" ng-click="addFavorite(x.id)">favorite</button></td>
+                                <td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td><tr><td></td><td></td><td><button type="button" ng-click="submitPlacePaging(placesPaging.previous)" class="btn">Previous</button></td><td><button type="button" class="btn" ng-click="submitPlacePaging(placesPaging.next)">Next</button></td>
+                        </table>
+                    </div>
+                    <div id="Groups" class="tab-pane fade">
+                        <table class="table table-hover"><tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in groups"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td><td><button class="btn btn-info" ng-click="addFavorite(x.id)">favorite</button></td><td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td><tr><td></td><td></td><td><button type="button" ng-click="submitGroupPaging(groupsPaging.previous)" class="btn">Previous</button>
+                        </td><td><button type="button" class="btn" ng-click="submitGroupPaging(groupsPaging.next)">Next</button></td>
+                        </table>
+                    </div>
+                    
+                    <div id="Favorites" class="tab-pane fade">
+                        <table class="table table-hover">
+                            <tr><th>#</th><th>Profile photo</th><th>Name</th><th>Type</th><th>Favorite</th><th>Details</th>
+                            <tr ng-repeat="x in dataArray"><td>{{$index+1}}</td><td><img src="{{x.picture.data.url}}" class="img-circle" width="40" height="40"></td><td>{{x.name}}</td><td></td><td></td><td><button ng-click="submitDetail(x.id)" class="btn btn-link">Detail</button></td>
+                        </table>
+                    </div>
+                </div>
+                </div> 
+                
+            </div>
+            
+            <div>
+            {{jsonreturn}}
+            </div>
+        </div>
+        
+        
+    </body>   
+</html>
